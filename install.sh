@@ -12,7 +12,6 @@ printf "Setting up service...\n"
 WORKDIR=$(pwd)
 TEXT="[Unit]
 Description=Automatic Postgres databases backup to Discord
-Environment=POETRY_VIRTUALENVS_PATH=$WORKDIR/venv
 
 [Service]
 ExecStart=/bin/bash -c \"poetry run python3 ./run.py\"
@@ -21,7 +20,10 @@ Restart=always
 User=root
 
 [Install]
-WantedBy=multi-user.target"
+WantedBy=multi-user.target
+
+[Service]
+Environment=POETRY_VIRTUALENVS_PATH=$WORKDIR/venv"
 echo "$TEXT" | sudo tee /etc/systemd/system/postgres-auto-backup.service
 sudo systemctl daemon-reload
 printf "Service setup successfully!\n\n"
